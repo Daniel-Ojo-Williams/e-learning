@@ -12,6 +12,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
 import { AuthPayload } from '../users/Types';
+import { ReqContext } from './types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
-    const gqlContext = ctx.getContext();
+    const gqlContext = ctx.getContext<ReqContext>();
     const request = gqlContext.req;
 
     const token = this.extractTokenFromHeader(request);

@@ -1,27 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateCourseContent } from './dto/add-course-content.dto';
+import { CreateLesson } from './dto/add-lesson.dto';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import genToken from 'src/utils/genToken';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CourseContent } from './entities/course-content.entity';
-import { DataSource, Repository } from 'typeorm';
-import { CoursesService } from 'src/courses/courses.service';
+import { Lessons } from './entities/lessons.entity';
+import { Repository } from 'typeorm';
 import { FileUpload } from 'graphql-upload';
 import { ConfigService } from '@nestjs/config';
+import { ModulesService } from 'src/modules/modules.service';
 
 @Injectable()
-export class CourseContentService {
+export class LessonsService {
   constructor(
-    @InjectRepository(CourseContent)
-    private courseContent: Repository<CourseContent>,
-    private courseService: CoursesService,
-    private dataSource: DataSource,
+    @InjectRepository(Lessons)
+    private lessonRepo: Repository<Lessons>,
+    private moduleService: ModulesService,
     private config: ConfigService,
   ) {}
 
-  async createCourseContent(
-    { description, sequenceNumber, title, courseId }: CreateCourseContent,
+  async createLesson(
+    { description, sequenceNumber, title, moduleId }: CreateLesson,
     content: FileUpload,
   ) {
     const { createReadStream } = await content;
@@ -50,29 +49,21 @@ export class CourseContentService {
       resolve({ Key });
     });
 
-    const course = await this.courseService.findCourseById(courseId);
+    const module = await this.moduleService.findOneModule(moduleId);
 
-    if (!course)
+    if (!module)
       throw new NotFoundException(
-        'Course not found, please check and try again',
+        'Module not found, please check and try again',
       );
 
-    const courseContent = this.courseContent.create({
+    const lesson = this.lessonRepo.create({
       description,
       sequenceNumber,
-      uploadId: Key,
-      course,
+      uploadKey: Key,
+      module,
       title,
     });
 
-    course.courseContents ||= [];
-    course.courseContents.push(courseContent);
-
-    await this.dataSource.transaction(async (manager) => {
-      await manager.save(courseContent);
-      await manager.save(course);
-    });
-
-    return courseContent;
+    return await this.lessonRepo.save(lesson);
   }
 }

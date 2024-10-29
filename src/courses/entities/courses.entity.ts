@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../utils/baseEntity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Users } from '../../users/entities/user.entity';
-import { CourseContent } from '../../course-content/entities/course-content.entity';
+import { Module } from 'src/modules/entities/module.entity';
 
 @ObjectType()
 @Entity()
@@ -32,9 +32,9 @@ export class Courses extends BaseEntity {
   @Column({ type: 'boolean' })
   availabile: boolean;
 
-  @Field(() => CourseContent)
-  @OneToMany(() => CourseContent, (courseContent) => courseContent.course, {
-    cascade: true,
+  @Field(() => [Module], {
+    description: 'Modules under a course, which groups lessons for this course',
   })
-  courseContents: CourseContent[];
+  @OneToMany(() => Module, (module) => module.course)
+  modules: Module[];
 }

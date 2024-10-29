@@ -6,17 +6,6 @@ input ConfirmEmail {
   token: String!
 }
 
-type CourseContent {
-  course: Courses!
-  createdAt: DateTime!
-  description: String!
-  id: ID!
-  sequenceNumber: Int!
-  title: String!
-  updatedAt: DateTime!
-  uploadId: String!
-}
-
 input CourseDetails {
   availabile: Boolean!
   description: String!
@@ -26,20 +15,28 @@ input CourseDetails {
 
 type Courses {
   availabile: Boolean!
-  courseContents: CourseContent!
   createdAt: DateTime!
   description: String!
   duration: String!
   id: ID!
   instructor: Users!
+  modules: [Module!]!
   title: String!
   updatedAt: DateTime!
 }
 
-input CreateCourseContent {
-  courseId: String!
+input CreateLesson {
   description: String!
+  moduleId: String!
   sequenceNumber: Int!
+  title: String!
+}
+
+input CreateModuleInput {
+  """ID of the course the module belongs to"""
+  courseId: String!
+
+  """Title of the module"""
   title: String!
 }
 
@@ -56,6 +53,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Lessons {
+  createdAt: DateTime!
+  description: String!
+
+  """How long it would take to consume the resource"""
+  duration: String!
+  id: ID!
+  mediaURL: String!
+  module: Module!
+  sequenceNumber: Int!
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  uploadKey: String!
+}
+
 type LoginResponse {
   accessToken: String!
   user: Users!
@@ -66,17 +79,37 @@ input LoginUserDetails {
   password: String!
 }
 
+"""Module groups lessons into different sections"""
+type Module {
+  createdAt: DateTime!
+  id: ID!
+
+  """Lessons in a module"""
+  lessons: [Lessons!]!
+
+  """Title of the module"""
+  title: String!
+  updatedAt: DateTime!
+}
+
 type Mutation {
   addCourse(courseDetails: CourseDetails!): Courses!
   confirmEmail(confirmEmail: ConfirmEmail!): String!
-  createCourseContent(content: Upload!, createCourseContent: CreateCourseContent!): CourseContent!
+  createLesson(content: Upload!, createLesson: CreateLesson!): Lessons!
+  createModule(createModuleInput: CreateModuleInput!): Module!
   createUser(createUserDetails: CreateUser!): String!
   loginUser(loginUserDetails: LoginUserDetails!): LoginResponse!
+  removeModule(moduleId: String!): Boolean!
   updateCourse(courseDetails: UpdateCourseInput!, courseId: String!): Courses!
+  updateModule(moduleId: String!): Module!
 }
 
 type Query {
   getACourse(courseId: String!): Courses!
+  module(
+    """Returns a single module"""
+    moduleId: String!
+  ): Module!
   myProfile: Users!
   users(id: ID!): Users!
 }
@@ -96,7 +129,8 @@ type Users {
   coursesInstructing: [Courses]
   createdAt: DateTime!
   email: String!
+  firstName: String!
   id: ID!
-  name: String!
+  lastName: String!
   updatedAt: DateTime!
 }

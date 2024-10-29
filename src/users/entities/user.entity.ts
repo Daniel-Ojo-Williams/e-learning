@@ -9,7 +9,11 @@ import { Courses } from 'src/courses/entities/courses.entity';
 export class Users extends BaseEntity {
   @Field()
   @Column()
-  name: string;
+  firstName: string;
+
+  @Field()
+  @Column()
+  lastName: string;
 
   @Field()
   @Column()
@@ -25,8 +29,8 @@ export class Users extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   emailVerified: boolean;
 
-  @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
-  role: Roles;
+  @Column({ type: 'enum', enum: Roles, default: [Roles.STUDENT], array: true })
+  role: Roles[];
 
   @Column({ nullable: true })
   token?: string;

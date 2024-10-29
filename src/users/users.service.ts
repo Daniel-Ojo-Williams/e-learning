@@ -31,13 +31,14 @@ export class UsersService {
     const { token, tokenExpiry } = genToken();
     user.token = token;
     user.tokenExpiry = tokenExpiry;
+    user.role = [];
 
-    if (createUser.isInstructor) user.role = Roles.INSTRUCTOR;
+    if (createUser.isInstructor) user.role.push(Roles.INSTRUCTOR);
 
     await this.users.save(user);
     await this.mailService.sendUserWelcomeEmail(
       {
-        username: user.name,
+        username: `${user.firstName}_${user.lastName}`,
         email: user.email,
       },
       token,

@@ -14,7 +14,7 @@ Welcome to the online learning management system designed to deliver educational
 - **Authentication:** JWT
 - **Documentation**: --
 
-## Database Design 
+## [Database Design](https://dbdiagram.io/d/672061a097a66db9a3981ca2)
 ![Database Design](./docs/db_diagram.png)
 
 ## Prerequisites

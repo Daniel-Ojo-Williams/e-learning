@@ -14,7 +14,8 @@ import { MailModule } from './mail/mail.module';
 import { CoursesModule } from './courses/courses.module';
 import { CompositeGuard } from './guards/composite-guards.guard';
 import { RolesGuard } from './guards/roles.guard';
-import { CourseContentModule } from './course-content/course-content.module';
+import { CourseContentModule } from './lessons/lessons.module';
+import { ModulesModule } from './modules/modules.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CourseContentModule } from './course-content/course-content.module';
     MailModule,
     CoursesModule,
     CourseContentModule,
+    ModulesModule,
   ],
   controllers: [],
   providers: [

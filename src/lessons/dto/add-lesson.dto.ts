@@ -1,11 +1,11 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 // import { FileUpload } from '../types';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 // import * as GraphQLUpload from 'graphql-upload';
 // import type { FileUpload } from 'graphql-upload/processRequest.js';
 
 @InputType()
-export class CreateCourseContent {
+export class CreateLesson {
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -23,6 +23,7 @@ export class CreateCourseContent {
 
   @Field()
   @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  courseId: string;
+  moduleId: string;
 }
