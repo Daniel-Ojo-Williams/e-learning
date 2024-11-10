@@ -33,7 +33,7 @@ export class Lessons extends BaseEntity {
   @Field()
   type: LessonTypes;
 
-  @Column()
+  @Column({ nullable: true })
   @Field({ description: 'How long it would take to consume the resource' })
   duration: string;
 

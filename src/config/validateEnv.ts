@@ -46,6 +46,15 @@ export class EnvVariables {
 
   @IsString()
   S3_ACCESSKEYSECRET: string;
+
+  @IsString()
+  API_KEY: string;
+
+  @IsString()
+  CLOUD_NAME: string;
+
+  @IsString()
+  API_SECRET: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
