@@ -10,7 +10,6 @@ import { UsersModule } from './users/users.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
 import { GqlHttpExceptionFilter } from './filters/gqlFilter';
-import { MailModule } from './mail/mail.module';
 import { CoursesModule } from './courses/courses.module';
 import { CompositeGuard } from './guards/composite-guards.guard';
 import { RolesGuard } from './guards/roles.guard';
@@ -30,6 +29,7 @@ import { ModulesModule } from './modules/modules.module';
         return {
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
           sortSchema: true,
+          csrfPrevention: true,
           uploads: false,
           formatError: (error) => {
             return {
@@ -41,7 +41,6 @@ import { ModulesModule } from './modules/modules.module';
       },
     }),
     UsersModule,
-    MailModule,
     CoursesModule,
     CourseContentModule,
     ModulesModule,

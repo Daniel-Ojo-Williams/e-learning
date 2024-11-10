@@ -1,7 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { IsNumber, IsString, validateSync } from 'class-validator';
 
-class EnvVariables {
+export class EnvVariables {
   @IsString()
   JWT_SECRET: string;
 
@@ -30,13 +30,22 @@ class EnvVariables {
   MAIL_HOST: string;
 
   @IsNumber()
-  SMTP_PORT: number;
+  MAIL_PORT: number;
 
   @IsString()
-  SMTP_USERNAME: string;
+  MAIL_USERNAME: string;
 
   @IsString()
-  SMTP_PASSWORD: string;
+  MAIL_PASSWORD: string;
+
+  @IsString()
+  S3_REGION: string;
+
+  @IsString()
+  S3_ACCESSKEYID: string;
+
+  @IsString()
+  S3_ACCESSKEYSECRET: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {

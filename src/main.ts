@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { GqlQueryFailedErrorFilter } from './filters/gqlFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   app.use(graphqlUploadExpress());
+  app.useGlobalFilters(new GqlQueryFailedErrorFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

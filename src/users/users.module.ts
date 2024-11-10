@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
-import { MailModule } from '../mail/mail.module';
 import { MailService } from 'src/mail/mail.service';
 
 const JWT_PROVIDER = (
@@ -28,7 +27,7 @@ const JWT_ACCESS = () => JWT_PROVIDER('JWT_ACCESS', 'JWT_SECRET', '5h');
 // const JWT_REFRESH = () => JWT_PROVIDER('JWT_REFRESH', 'JWT_REFRESH', '7d');
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Users]), MailModule],
+  imports: [TypeOrmModule.forFeature([Users])],
   providers: [UsersResolver, UsersService, JWT_ACCESS(), MailService],
   exports: [JWT_ACCESS(), UsersService],
 })

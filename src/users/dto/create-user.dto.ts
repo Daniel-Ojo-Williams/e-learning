@@ -23,6 +23,16 @@ export class CreateUser {
   @IsNotEmpty()
   email: string;
 
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Field((_type) => Boolean, { nullable: true })
   @IsBoolean()

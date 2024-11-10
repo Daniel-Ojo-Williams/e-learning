@@ -1,8 +1,11 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType, Int, registerEnumType } from '@nestjs/graphql';
 // import { FileUpload } from '../types';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
-// import * as GraphQLUpload from 'graphql-upload';
-// import type { FileUpload } from 'graphql-upload/processRequest.js';
+import { LessonTypes } from '../entities/lessons.entity';
+
+registerEnumType(LessonTypes, {
+  name: 'LessonTypes',
+});
 
 @InputType()
 export class CreateLesson {
@@ -26,4 +29,9 @@ export class CreateLesson {
   @IsUUID()
   @IsNotEmpty()
   moduleId: string;
+
+  @Field(() => LessonTypes)
+  @IsString()
+  @IsNotEmpty()
+  type: LessonTypes;
 }

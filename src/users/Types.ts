@@ -7,5 +7,5 @@ export enum Roles {
 export type AuthPayload = {
   sub: string;
   email: string;
-  role: Roles;
+  role: Roles[];
 };

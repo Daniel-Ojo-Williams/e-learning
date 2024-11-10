@@ -30,6 +30,7 @@ input CreateLesson {
   moduleId: String!
   sequenceNumber: Int!
   title: String!
+  type: LessonTypes!
 }
 
 input CreateModuleInput {
@@ -42,7 +43,9 @@ input CreateModuleInput {
 
 input CreateUser {
   email: String!
+  firstName: String!
   isInstructor: Boolean
+  lastName: String!
   name: String!
   password: String!
   username: String!
@@ -52,6 +55,13 @@ input CreateUser {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum LessonTypes {
+  AUDIO
+  IMAGE
+  READING
+  VIDEO
+}
 
 type Lessons {
   createdAt: DateTime!

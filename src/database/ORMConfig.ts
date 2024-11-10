@@ -14,9 +14,6 @@ class TypeOrmConfig {
       username: env.get('DB_USER'),
       port: env.get('DB_PORT'),
       password: env.get('DB_PASS'),
-      ssl: {
-        ca: env.get('DB_CA_CERT'),
-      },
     };
   }
 }

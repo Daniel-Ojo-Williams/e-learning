@@ -15,6 +15,7 @@ const dataSourceOptions: DataSourceOptions = {
   port: env.DB_PORT,
   password: env.DB_PASS,
   ssl: {
+    rejectUnauthorized: false,
     ca: env.DB_CA_CERT,
   },
 };
