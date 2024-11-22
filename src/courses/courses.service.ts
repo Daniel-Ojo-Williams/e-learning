@@ -5,10 +5,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Courses } from './entities/courses.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, ILike, Repository } from 'typeorm';
 import { CourseDetails } from './dto/add-course.dto';
 import { UsersService } from '../users/users.service';
 import { UpdateCourseInput } from './dto/update-course.dto';
+import { SearchCourses } from './dto/get-courses.dto';
 
 @Injectable()
 export class CoursesService {
@@ -52,21 +53,28 @@ export class CoursesService {
   }
 
   async findCourseById(courseId: string) {
-    const course = await this.courses
-      .createQueryBuilder('course')
-      .leftJoinAndSelect('course.instructor', 'instructor')
-      .select(['course', 'instructor'])
-      .where('course.id = :courseId', { courseId })
-      .getOne();
+    const course = await this.courses.findOne({
+      where: { id: courseId },
+      relations: {
+        instructor: true,
+      },
+    });
 
     if (!course) throw new NotFoundException({ message: 'Course not found' });
 
     return course;
   }
 
-  // async findCoursesByInstructorId(instructorId: string) {
-  //   const courses = await this.courses.createQueryBuilder()
-  // }
-  // getAllCourses
-  // deleteCourses
+  async getAllCourses(searchCourse?: SearchCourses) {
+    const { keyword } = searchCourse;
+    let courses: Courses[];
+    if (keyword) {
+      courses = await this.courses.find({
+        where: { title: ILike(`%${keyword}%`) },
+      });
+    } else {
+      courses = await this.courses.find();
+    }
+    return courses;
+  }
 }

@@ -17,6 +17,7 @@ import { UpdateCourseInput } from './dto/update-course.dto';
 import { ReqContext } from 'src/guards/types';
 import { Module } from 'src/modules/entities/module.entity';
 import { ModulesService } from 'src/modules/modules.service';
+import { SearchCourses } from './dto/get-courses.dto';
 
 @Resolver(() => Courses)
 export class CoursesResolver {
@@ -55,6 +56,17 @@ export class CoursesResolver {
   @Query(() => Courses)
   async getACourse(@Args('courseId', ParseUUIDPipe) courseId: string) {
     return this.coursesService.findCourseById(courseId);
+  }
+
+  @Query(() => [Courses])
+  async getAllCourses(
+    @Args('search', {
+      nullable: true,
+      description: 'Keyword to search for course title',
+    })
+    search?: SearchCourses,
+  ) {
+    return this.coursesService.getAllCourses(search);
   }
 
   @ResolveField('modules', () => [Module])

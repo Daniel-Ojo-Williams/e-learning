@@ -11,10 +11,16 @@ export class Module extends BaseEntity {
   @Column()
   title: string;
 
-  @ManyToOne(() => Courses, (course) => course.modules)
+  @ManyToOne(() => Courses, (course) => course.modules, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   course: Courses;
 
-  @Field(() => [Lessons], { description: 'Lessons in a module' })
+  @Field(() => [Lessons], {
+    description: 'Lessons in a module',
+    nullable: true,
+  })
   @OneToMany(() => Lessons, (lesson) => lesson.module)
   lessons: Lessons[];
 }

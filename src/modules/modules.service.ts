@@ -4,15 +4,22 @@ import { UpdateModuleInput } from './dto/update-module.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Module } from './entities/module.entity';
 import { Repository } from 'typeorm';
+import { Courses } from '../courses/entities/courses.entity';
 
 @Injectable()
 export class ModulesService {
   constructor(
     @InjectRepository(Module) private readonly modulesRepo: Repository<Module>,
+    @InjectRepository(Courses)
+    private readonly coursesRepo: Repository<Courses>,
   ) {}
 
   async create(createModuleInput: CreateModuleInput) {
+    const { courseId } = createModuleInput;
+    const course = await this.coursesRepo.findOneBy({ id: courseId });
+    if (!course) throw new NotFoundException('Course not found');
     const module = this.modulesRepo.create(createModuleInput);
+    module.course = course;
     return this.modulesRepo.save(module);
   }
 

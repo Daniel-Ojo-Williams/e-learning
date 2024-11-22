@@ -15,10 +15,13 @@ export class Courses extends BaseEntity {
   @Column()
   description: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Field((type) => Users)
+  @Field(() => Users, {
+    nullable: true,
+    description: 'Instructor of the course',
+  })
   @ManyToOne(() => Users, (users) => users.coursesInstructing, {
     nullable: false,
+    eager: false,
   })
   @JoinColumn({ name: 'instructorId' })
   instructor: Users;
@@ -27,14 +30,14 @@ export class Courses extends BaseEntity {
   @Column()
   duration: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
   @Column({ type: 'boolean' })
   availabile: boolean;
 
   @Field(() => [Module], {
     description: 'Modules under a course, which groups lessons for this course',
+    nullable: true,
   })
-  @OneToMany(() => Module, (module) => module.course)
+  @OneToMany(() => Module, (module) => module.course, { eager: false })
   modules: Module[];
 }

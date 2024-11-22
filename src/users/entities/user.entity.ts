@@ -41,8 +41,7 @@ export class Users extends BaseEntity {
   @Column({ nullable: true, default: false })
   usedToken?: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Field((type) => [Courses], { nullable: 'itemsAndList' })
+  @Field(() => [Courses], { nullable: 'itemsAndList' })
   @OneToMany(() => Courses, (courses) => courses.instructor, { eager: true })
   coursesInstructing: Courses[];
 }

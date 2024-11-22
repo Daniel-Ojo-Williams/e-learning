@@ -41,7 +41,6 @@ export class Lessons extends BaseEntity {
   @Field(() => Int)
   sequenceNumber: number;
 
-  @Field(() => Module)
   @ManyToOne(() => Module, (module) => module.lessons, {
     onDelete: 'CASCADE',
   })

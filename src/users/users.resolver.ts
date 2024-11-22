@@ -40,7 +40,7 @@ export class UsersResolver {
   }
 
   @Public()
-  @Mutation((returns) => LoginResponse)
+  @Mutation(() => LoginResponse)
   async loginUser(
     @Args('loginUserDetails') loginUserDetails: LoginUserDetails,
   ): Promise<LoginResponse> {

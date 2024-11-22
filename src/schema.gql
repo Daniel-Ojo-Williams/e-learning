@@ -19,7 +19,9 @@ type Courses {
   description: String!
   duration: String!
   id: ID!
-  instructor: Users!
+
+  """Instructor of the course"""
+  instructor: Users
   modules: [Module!]!
   title: String!
   updatedAt: DateTime!
@@ -71,7 +73,6 @@ type Lessons {
   duration: String!
   id: ID!
   mediaURL: String!
-  module: Module!
   sequenceNumber: Int!
   title: String!
   type: String!
@@ -95,7 +96,7 @@ type Module {
   id: ID!
 
   """Lessons in a module"""
-  lessons: [Lessons!]!
+  lessons: [Lessons!]
 
   """Title of the module"""
   title: String!
@@ -116,12 +117,20 @@ type Mutation {
 
 type Query {
   getACourse(courseId: String!): Courses!
+  getAllCourses(
+    """Keyword to search for course title"""
+    search: SearchCourses
+  ): [Courses!]!
   module(
     """Returns a single module"""
     moduleId: String!
   ): Module!
   myProfile: Users!
   users(id: ID!): Users!
+}
+
+input SearchCourses {
+  keyword: String
 }
 
 input UpdateCourseInput {
